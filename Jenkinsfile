@@ -1,31 +1,34 @@
 pipeline {
     agent any
-    
+
     stages {
+        stage('Checkout SCM') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('List Files') {
+            steps {
+                sh 'ls -alh'  // List all files to verify Dockerfile is present
+            }
+        }
+
         stage('Build') {
             steps {
-                script {
-                    // Add any build commands here, for example:
-                    sh 'docker build -t b-safe-image .'
-                }
+                sh 'docker build -t b-safe-image .'
             }
         }
 
         stage('Test') {
             steps {
-                script {
-                    // Run your test script here
-                    sh './test.sh'
-                }
+                sh './test.sh'
             }
         }
 
         stage('Deploy') {
             steps {
-                script {
-                    // Deploy your container here
-                    sh 'docker run -d -p 8081:80 b-safe-image'
-                }
+                sh 'docker run -d -p 8081:80 b-safe-image'
             }
         }
     }
