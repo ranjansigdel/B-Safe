@@ -1,12 +1,17 @@
+# Use an official base image
+FROM node:14
 
-# Install dependencies and Nginx
-RUN apt update && apt install -y curl nginx
+# Set the working directory in the container
+WORKDIR /app
 
-# Copy the app files into the container (if you have a web page to serve)
-COPY index.html /var/www/html/
+# Copy the application code to the container
+COPY . .
 
-# Expose the port
-EXPOSE 80
+# Install dependencies
+RUN npm install
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Expose the app on port 3000
+EXPOSE 3000
+
+# Run the application
+CMD ["npm", "start"]
